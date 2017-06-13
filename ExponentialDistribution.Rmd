@@ -1,0 +1,73 @@
+---
+title: 'Part 1:  exponential distribution'
+author: "Swathi Vijayakumar"
+date: "August 23, 2015"
+output: html_document
+---
+In purpose of part 1 is to investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution will be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda. We will set lambda = 0.2 for all of the simulations and investigate the distribution of averages of 40 exponentials. At least a thousand simulations will be performed. 
+
+###1. Show the sample mean and compare it to the theoretical mean of the distribution.
+```{r}
+library(stats)
+n = 40
+nosim = 1:1000
+set.seed(5)
+lam = 0.2
+dat = data.frame(exp_dist = sapply(nosim,function(x){mean(rexp(n,lam))}))
+```
+
+
+**first calculate the mean of the exponential distribution**
+
+```{r}
+samp_mean = mean(dat$exp_dist)
+round(samp_mean,3) 
+```
+
+we are told that the mean of the exponential distribution is 1/lambda
+
+```{r}
+round(1/lam,3)
+```
+As shown above the actual center of the distribution 5.043 is close to the thoretical center of the distribution 5.
+
+
+###2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
+
+
+**Calculate the standard deviation of the exponential distribution using the sd function**
+
+```{r}
+sd = sd(dat$exp_dist)
+round(sd,3)
+```
+The theoretical standard deviation is
+```{r}
+round((1/lam)/sqrt(40),3)
+```
+
+**Calculate the variance of the exponential distribution using the var function**
+
+``` {r}
+samp_var = var(dat$exp_dist)
+round(samp_var,3)
+```
+
+we are told that the standard deviation is 1/lambda. The theoretical Variance is sigma^2/n where sigma is the standard deviation
+
+```{r}
+round(((1/lam)^2)/n,3)
+```
+
+As shown above the actual variance 0.603 is close to the thoretical variance of 0.625.
+
+###3. Show that the distribution is approximately normal.
+
+```{r}
+library(ggplot2)
+g = ggplot(dat, aes(x=exp_dist)) + geom_histogram(binwidth=.3,color = "black",fill = "darkred",aes(y=..density..)) 
+g = g + stat_function(fun=dnorm,arg = list(mean = 5,sd = sd(dat$exp_dist)),size=2, warning=FALSE) 
+g
+````
+
+The histogram plot above shows that the distribution is approximately normal (shown by curve in black) with a mean of 5 and standard deviation of 0.791

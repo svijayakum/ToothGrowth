@@ -1,0 +1,77 @@
+---
+title: "Part 2:Tooth Growth Exploratory Data Analysis"
+author: "Swathi Vijayakumar"
+date: "August 23, 2015"
+output: html_document
+---
+
+
+The purpose of this portion is to do a preliminary analysis of  ToothGrowth data set in the R dataset package. The data will first be loaded into R, basic summary tables and plots will be created then a confidence interval/hypothesis test will be performed to compare tooth growth to supplements given and dosages used. 
+
+**Loading the ToothGrowth data and performing some basic exploratory data analyses to provide a basic summary of the data.**
+
+```{r}
+library(datasets)
+data("ToothGrowth")
+summary(ToothGrowth)
+str(ToothGrowth)
+```
+ 
+
+```{r}
+library(ggplot2)
+g = ggplot(ToothGrowth, aes(x = dose, y = len, color = supp)) # designating a different color for each supplement.
+g = g + geom_point()
+g = g + facet_grid(. ~ supp) # seperates out the plots by supp
+g
+```
+
+The geometric plot shows dose should be factor not numeric.  Only 3 different doses were administered. For the rest of the analysis dose will be converted to the factor class.  
+
+
+```{r}
+g <- ggplot(ToothGrowth, aes(x = factor(dose), y = len, fill = factor(dose)))
+g <- g + geom_violin(col = "black", size = 2)
+g = g + facet_grid(. ~ supp)
+g
+```
+
+The violin plot above indicates that the variance for dose 2 for both supplement is different form dose 0.5 & 1mgs.  
+
+```{r}
+g = ggplot(ToothGrowth, aes(x = factor(dose), y = len, fill = factor(dose)))
+g = g + geom_boxplot(outlier.colour = "green", outlier.size = 3 ) 
+g = g + facet_grid(. ~ supp)
+g
+```
+
+The box plot above shows a definite increase in tooth growth as the administered doasage increases for both supplements.  OJ shows more of an overlapp for the three doses where VC shows that the three populations have very little over lap.  The green dot on the box plott represent any outliers present.  
+
+**Confidence interval/hypothesis tests to compare tooth growth by supp and dose.**
+
+```{r}
+TGDose0.5 = subset(ToothGrowth, dose == 0.5)
+t.test(len ~ supp, paired = FALSE, var.eq = TRUE, data =  TGDose0.5)
+```
+
+We see a significant p-value of 0.005304 suggesting that at a 0.5mg dose,tooth grown for guinea pigs is effected by the supplement given. Administring OJ  at a 0.5mg dosage results in better tooth growth.
+
+```{r}
+TGDose1.0 = subset(ToothGrowth, dose == 1.0)
+t.test(len ~ supp, paired = FALSE, var.eq = TRUE, data =  TGDose1.0)
+```
+
+We see a significant p-value of 0.0007807 suggesting that at a 1.0mg dose,tooth grown for guinea pigs is effected by the supplement given. Administring OJ  at  a 1.0mg dosage results in better tooth growth.
+
+```{r}
+TGDose2.0 = subset(ToothGrowth, dose == 2.0)
+t.test(len ~ supp, paired = FALSE, var.eq = TRUE, data =  TGDose2.0)
+```
+
+At the high dose of 2.0mg we don't see a significant p-value suggesting that there is no difference in the 
+supplement administred.  Both OJ and VC show and over all equal mean.  
+
+
+**Conclusions and assumptions needed for conclusion** 
+
+We see an increase in tooth growth as the administered doasage increases for both supplements OJ and VC.  Overall with the 0.5mg and 1.0mg administration of supplement OJ shows a better tooth growth compared to administring VC.  When the doasage increases to 2.0 milligrams however, the both supplements show equal effect.  In either case, tooth length increases as the doasage increases.  

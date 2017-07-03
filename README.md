@@ -1,9 +1,9 @@
-## Files in this repo
-README.md – This is the README.md  
-ExponentialDistribution.Rmd - describes analysis performed and coded used for exponential distribution.
-ToothGrowth.Rmd - describes analysis performed and coded used for tooth growth project
-ExponentialDistribution.html - output for analysis
-ToothGrowth.html - output for analysis
+## Files in this repo  
+README.md – This is the README.md    
+ExponentialDistribution.Rmd - describes analysis performed and coded used for exponential distribution.  
+ToothGrowth.Rmd - describes analysis performed and coded used for tooth growth project.  
+ExponentialDistribution.html - output for analysis.  
+ToothGrowth.html - output for analysis.  
 
 ## Purpose
 
